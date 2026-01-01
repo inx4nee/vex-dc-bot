@@ -1,32 +1,26 @@
 {
-  "name": "vex-bot",
+  "name": "vex-moderation-bot",
   "version": "1.0.0",
-  "description": "Vex Discord moderation bot",
-  "main": "dist/index.js",
+  "description": "Vex - Modern Discord moderation bot with web dashboard",
+  "private": true,
+  "workspaces": [
+    "bot",
+    "web",
+    "shared"
+  ],
   "scripts": {
-    "dev": "tsx watch src/index.ts",
-    "build": "tsc",
-    "start": "node dist/index.js"
-  },
-  "dependencies": {
-    "discord.js": "^14.14.1",
-    "dotenv": "^16.3.1",
-    "mongoose": "^8.0.3",
-    "ms": "^2.1.3",
-    "express": "^4.18.2",
-    "cors": "^2.8.5",
-    "jsonwebtoken": "^9.0.2",
-    "bcryptjs": "^2.4.3",
-    "axios": "^1.6.2"
+    "install:all": "npm install && npm install --workspace=bot && npm install --workspace=web",
+    "dev:bot": "npm run dev --workspace=bot",
+    "dev:web": "npm run dev --workspace=web",
+    "dev": "concurrently \"npm run dev:bot\" \"npm run dev:web\"",
+    "build": "npm run build --workspace=bot && npm run build --workspace=web",
+    "build:bot": "npm run build --workspace=bot",
+    "build:web": "npm run build --workspace=web",
+    "start:bot": "npm run start --workspace=bot",
+    "start:web": "npm run start --workspace=web",
+    "railway:build": "cd bot && npm run build && cd ../web && npm run build"
   },
   "devDependencies": {
-    "@types/node": "^20.10.5",
-    "@types/express": "^4.17.21",
-    "@types/cors": "^2.8.17",
-    "@types/jsonwebtoken": "^9.0.5",
-    "@types/bcryptjs": "^2.4.6",
-    "@types/ms": "^0.7.34",
-    "tsx": "^4.7.0",
-    "typescript": "^5.3.3"
+    "concurrently": "^8.2.2"
   }
 }
