@@ -1,0 +1,27 @@
+FROM node:18-alpine
+
+# Set working directory
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+COPY web/package*.json ./web/
+
+# Install dependencies
+RUN npm install
+RUN cd web && npm install
+
+# Copy source code
+COPY . .
+
+# Build Next.js application
+RUN cd web && npm run build
+
+# Set environment to production
+ENV NODE_ENV=production
+
+# Expose port
+EXPOSE 3000
+
+# Start web dashboard
+CMD ["npm", "run", "start:web"]

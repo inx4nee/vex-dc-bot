@@ -1,0 +1,14 @@
+runtime: nodejs18
+
+# Bot Service
+service: bot
+instance_class: F1
+automatic_scaling:
+  min_instances: 1
+  max_instances: 1
+
+env_variables:
+  NODE_ENV: "production"
+
+# Note: Set sensitive environment variables via:
+# gcloud app deploy --set-env-vars="DISCORD_TOKEN=xxx,MONGODB_URI=xxx"

@@ -1,0 +1,87 @@
+version: '3.8'
+
+services:
+  # Discord Bot Service
+  bot:
+    build:
+      context: .
+      dockerfile: Dockerfile.bot
+    container_name: vex-bot
+    environment:
+      - DISCORD_TOKEN=${DISCORD_TOKEN}
+      - DISCORD_CLIENT_ID=${DISCORD_CLIENT_ID}
+      - DISCORD_CLIENT_SECRET=${DISCORD_CLIENT_SECRET}
+      - MONGODB_URI=${MONGODB_URI}
+      - JWT_SECRET=${JWT_SECRET}
+      - BOT_API_PORT=3001
+      - PREFIX=${PREFIX:-!}
+      - NODE_ENV=production
+      - OWNER_IDS=${OWNER_IDS}
+    restart: unless-stopped
+    networks:
+      - vex-network
+    depends_on:
+      - mongo
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # Web Dashboard Service
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.web
+    container_name: vex-dashboard
+    ports:
+      - "${WEB_PORT:-3000}:3000"
+    environment:
+      - MONGODB_URI=${MONGODB_URI}
+      - JWT_SECRET=${JWT_SECRET}
+      - DISCORD_CLIENT_ID=${DISCORD_CLIENT_ID}
+      - DISCORD_CLIENT_SECRET=${DISCORD_CLIENT_SECRET}
+      - BOT_API_PORT=3001
+      - NODE_ENV=production
+      - OAUTH_REDIRECT_URI=${OAUTH_REDIRECT_URI}
+    restart: unless-stopped
+    networks:
+      - vex-network
+    depends_on:
+      - mongo
+      - bot
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # MongoDB Database (Optional - Use if not using Atlas)
+  mongo:
+    image: mongo:7
+    container_name: vex-mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_USERNAME:-admin}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASSWORD:-changeme}
+      - MONGO_INITDB_DATABASE=vex
+    volumes:
+      - mongo-data:/data/db
+      - mongo-config:/data/configdb
+    restart: unless-stopped
+    networks:
+      - vex-network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+networks:
+  vex-network:
+    driver: bridge
+
+volumes:
+  mongo-data:
+    driver: local
+  mongo-config:
+    driver: local
