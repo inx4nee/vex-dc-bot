@@ -1,0 +1,26 @@
+{
+  "name": "vex-moderation-bot",
+  "version": "1.0.0",
+  "description": "Vex - Modern Discord moderation bot with web dashboard",
+  "private": true,
+  "workspaces": [
+    "bot",
+    "web",
+    "shared"
+  ],
+  "scripts": {
+    "install:all": "npm install && npm install --workspace=bot && npm install --workspace=web",
+    "dev:bot": "npm run dev --workspace=bot",
+    "dev:web": "npm run dev --workspace=web",
+    "dev": "concurrently \"npm run dev:bot\" \"npm run dev:web\"",
+    "build": "npm run build --workspace=bot && npm run build --workspace=web",
+    "build:bot": "npm run build --workspace=bot",
+    "build:web": "npm run build --workspace=web",
+    "start:bot": "npm run start --workspace=bot",
+    "start:web": "npm run start --workspace=web",
+    "railway:build": "cd bot && npm run build && cd ../web && npm run build"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
