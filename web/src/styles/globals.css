@@ -1,0 +1,69 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 255, 255, 255;
+  --background-start-rgb: 35, 39, 42;
+  --background-end-rgb: 35, 39, 42;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+.card {
+  @apply bg-discord-gray rounded-lg p-6 shadow-lg;
+}
+
+.btn-primary {
+  @apply bg-discord-blurple hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded transition-colors;
+}
+
+.btn-secondary {
+  @apply bg-discord-gray hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded transition-colors;
+}
+
+.btn-danger {
+  @apply bg-discord-red hover:bg-red-600 text-white font-semibold py-2 px-4 rounded transition-colors;
+}
+
+.input-field {
+  @apply bg-discord-dark text-white border border-discord-gray rounded px-3 py-2 focus:outline-none focus:border-discord-blurple;
+}
+
+.toggle-switch {
+  @apply relative inline-block w-12 h-6;
+}
+
+.toggle-switch input {
+  @apply opacity-0 w-0 h-0;
+}
+
+.toggle-slider {
+  @apply absolute cursor-pointer top-0 left-0 right-0 bottom-0 bg-gray-600 rounded-full transition-all;
+}
+
+.toggle-slider:before {
+  @apply absolute content-[''] h-5 w-5 left-0.5 bottom-0.5 bg-white rounded-full transition-all;
+}
+
+input:checked + .toggle-slider {
+  @apply bg-discord-green;
+}
+
+input:checked + .toggle-slider:before {
+  transform: translateX(24px);
+}
